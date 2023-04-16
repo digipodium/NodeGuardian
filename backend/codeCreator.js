@@ -217,129 +217,131 @@ const createCode = (dependencies, files, filename, cb) => {
 
 const packageBuilder = (libraries) => {
   let dependencies = ``;  
-  libraries.map( async({name, package}) => {
+  libraries.forEach( async ({name, package}) => {
     let version = await getPackageVersion(package);
-    console.log(version);
-    dependencies += `"${package}": "^${version}",`
-})
+    // console.log(version);
+    dependencies += `"${package}": "^${version}",\n`;
+  });
+  console.log('dependencies', dependencies);
+// console.log(dependencies);
   return dependencies;
 
 }
 // createCode();
 
-const content = packageBuilder([
-  {
-    name: "React",
-    icon: "fab fa-react",
-    package: "react",
-    category: "UI",
-    dependencyPackages: ["react-dom", "react-scripts"],
-  },
-  {
-    name: "Redux",
-    icon: "fab fa-react",
-    package: "redux",
-    category: "Utility",
-    dependencyPackages: [],
-  },
-  {
-    name: "React-Redux",
-    icon: "fab fa-react",
-    package: "react-redux",
-    category: "Utility",
-    dependencyPackages: [],
-  },
-  {
-    name: "React-Router",
-    icon: "fab fa-react",
-    package: "react-router-dom",
-    category: "Routing",
-    dependencyPackages: [],
-  },
-  {
-    name: "Formik",
-    icon: "fab fa-react",
-    package: "formik",
-    category: "Form Handling",
-    dependencyPackages: [],
-  },
-  {
-    name: "Yup",
-    icon: "fab fa-react",
-    package: "yup",
-    category: "Form Handling",
-    dependencyPackages: [],
-  },
-  {
-    name: "Sweetalert 2",
-    icon: "fab fa-react",
-    package: "sweetalert2",
-    category: "UI",
-    dependencyPackages: ["sweetalert2-react-content"],
-  },
-  {
-    name: "Framer Motion",
-    icon: "fab fa-react",
-    package: "framer-motion",
-    category: "UI",
-    dependencyPackages: ["sweetalert2-react-content"],
-  },
-  {
-    name: "React-Bootstrap",
-    icon: "fab fa-react",
-    package: "react-bootstrap",
-    dependencyPackages: ["bootstrap", "react-router-dom"],
-  },
-  {
-    name: "React-Toastify",
-    icon: "fab fa-react",
-    package: "react-toastify",
-    dependencyPackages: [],
-  },
-  {
-    name: "React-Icons",
-    icon: "fab fa-react",
-    package: "react-icons",
-    dependencyPackages: [],
-  },
-  {
-    name: "React-Select",
-    icon: "fab fa-react",
-    package: "react-select",
-    dependencyPackages: [],
-  },
-  {
-    name: "React-Datepicker",
-    icon: "fab fa-react",
-    package: "react-datepicker",
-    dependencyPackages: [],
-  },
-  {
-    name: "React-Table",
-    icon: "fab fa-react",
-    package: "react-table",
-    dependencyPackages: [],
-  },
-  {
-    name: "React-Loading",
-    icon: "fab fa-react",
-    package: "react-loading",
-    dependencyPackages: [],
-  },
-  {
-    name: "React-Loading-Overlay",
-    icon: "fab fa-react",
-    package: "react-loading-overlay",
-    dependencyPackages: [],
-  },
-  {
-    name: "React-Loading-Skeleton",
-    icon: "fab fa-react",
-    package: "react-loading-skeleton",
-    dependencyPackages: [],
-  },
+// const content = packageBuilder([
+//   {
+//     name: "React",
+//     icon: "fab fa-react",
+//     package: "react",
+//     category: "UI",
+//     dependencyPackages: ["react-dom", "react-scripts"],
+//   },
+//   {
+//     name: "Redux",
+//     icon: "fab fa-react",
+//     package: "redux",
+//     category: "Utility",
+//     dependencyPackages: [],
+//   },
+//   {
+//     name: "React-Redux",
+//     icon: "fab fa-react",
+//     package: "react-redux",
+//     category: "Utility",
+//     dependencyPackages: [],
+//   },
+//   {
+//     name: "React-Router",
+//     icon: "fab fa-react",
+//     package: "react-router-dom",
+//     category: "Routing",
+//     dependencyPackages: [],
+//   },
+//   {
+//     name: "Formik",
+//     icon: "fab fa-react",
+//     package: "formik",
+//     category: "Form Handling",
+//     dependencyPackages: [],
+//   },
+//   {
+//     name: "Yup",
+//     icon: "fab fa-react",
+//     package: "yup",
+//     category: "Form Handling",
+//     dependencyPackages: [],
+//   },
+//   {
+//     name: "Sweetalert 2",
+//     icon: "fab fa-react",
+//     package: "sweetalert2",
+//     category: "UI",
+//     dependencyPackages: ["sweetalert2-react-content"],
+//   },
+//   {
+//     name: "Framer Motion",
+//     icon: "fab fa-react",
+//     package: "framer-motion",
+//     category: "UI",
+//     dependencyPackages: ["sweetalert2-react-content"],
+//   },
+//   {
+//     name: "React-Bootstrap",
+//     icon: "fab fa-react",
+//     package: "react-bootstrap",
+//     dependencyPackages: ["bootstrap", "react-router-dom"],
+//   },
+//   {
+//     name: "React-Toastify",
+//     icon: "fab fa-react",
+//     package: "react-toastify",
+//     dependencyPackages: [],
+//   },
+//   {
+//     name: "React-Icons",
+//     icon: "fab fa-react",
+//     package: "react-icons",
+//     dependencyPackages: [],
+//   },
+//   {
+//     name: "React-Select",
+//     icon: "fab fa-react",
+//     package: "react-select",
+//     dependencyPackages: [],
+//   },
+//   {
+//     name: "React-Datepicker",
+//     icon: "fab fa-react",
+//     package: "react-datepicker",
+//     dependencyPackages: [],
+//   },
+//   {
+//     name: "React-Table",
+//     icon: "fab fa-react",
+//     package: "react-table",
+//     dependencyPackages: [],
+//   },
+//   {
+//     name: "React-Loading",
+//     icon: "fab fa-react",
+//     package: "react-loading",
+//     dependencyPackages: [],
+//   },
+//   {
+//     name: "React-Loading-Overlay",
+//     icon: "fab fa-react",
+//     package: "react-loading-overlay",
+//     dependencyPackages: [],
+//   },
+//   {
+//     name: "React-Loading-Skeleton",
+//     icon: "fab fa-react",
+//     package: "react-loading-skeleton",
+//     dependencyPackages: [],
+//   },
   
-]);
-console.log(content);
+// ]);
+// console.log(content);
 
 module.exports = createCode;

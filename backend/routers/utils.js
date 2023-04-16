@@ -1,6 +1,7 @@
-const createCode = require('../codeCreator');
+const createCode = require("../codeCreator");
+const codeModel = require("../models/codeModel");
 
-const router = require('express').Router();
+const router = require("express").Router();
 
 const multer = require("multer");
 
@@ -19,20 +20,31 @@ router.post("/uploadfile", myStorage.single("myfile"), (req, res) => {
   res.status(200).json({ status: "success" });
 });
 
+router.get("/generateCode", (req, res) => {
+  createCode((filename) => {
+    res.json({ filename });
+  });
+});
 
-router.get('/generateCode', (req, res) => {
-    createCode((filename) => {
-        res.json({filename});
-    })
-})
-
-router.post('/generateCodeFromData', (req, res) => {
-    const {dependencies, files, name} = req.body;
-    createCode(files, name, (filename) => {
-        res.json({filename});
-    })
-})
-
-
+router.post("/generateCodeFromData", (req, res) => {
+  const { dependencies, files, name, createdBy } = req.body;
+  console.log(files);
+  createCode(dependencies, files, name, (filename) => {
+    new codeModel({
+      title: name,
+      dependencies,
+      createdBy,
+      created_at: new Date(),
+      updated_at: new Date(),
+    }).save()
+      .then((result) => {
+        res.json({ filename });
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).json({ status: "failed" });
+      });
+  });
+});
 
 module.exports = router;

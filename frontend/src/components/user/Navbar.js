@@ -32,8 +32,8 @@ const Navbar = () => {
             </NavLink>
           </li>
           <li>
-            <NavLink className="dropdown-item" to="/user/dashboard">
-              Dashboard
+            <NavLink className="dropdown-item" to="/user/mytemplates">
+              My Templates
             </NavLink>
           </li>
           <li>
@@ -92,7 +92,7 @@ const Navbar = () => {
               <NavLink
                 className="nav-link"
                 aria-current="page"
-                to="/main/browser"
+                to="/user/mytemplates"
               >
                 My Templates
               </NavLink>
@@ -101,9 +101,9 @@ const Navbar = () => {
               <NavLink
                 className="nav-link"
                 aria-current="page"
-                to="/main/browser"
+                to="/user/generator"
               >
-                My Boilerplate Code
+                Generate Boilerplate
               </NavLink>
             </li>
           </ul>

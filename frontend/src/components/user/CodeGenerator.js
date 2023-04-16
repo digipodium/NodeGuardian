@@ -1,20 +1,23 @@
 import React, { useState } from "react";
 import app_config, { structureData } from "../../config";
+import { toast } from "react-hot-toast";
 
 const CodeGenerator = () => {
   const url = app_config.apiUrl;
   const [fileUrl, setFileUrl] = useState("");
   const selOptions = JSON.parse(sessionStorage.getItem("selOptions"));
-  console.log(structureData[selOptions]);
+  // console.log(selOptions);
+  console.log(structureData[selOptions].files);
   const [dependencies, setDependencies] = useState([]);
+  const [currentUser, setCurrentUser] = useState(JSON.parse(sessionStorage.getItem("user")));
 
-  const generateBoilerplate = async () => {
-    const res = await fetch(url + "/util/generateCode");
-    console.log(res.status);
-    const data = await res.json();
-    console.log(data);
-    setFileUrl(url + "/" + data.filename);
-  };
+  // const generateBoilerplate = async () => {
+  //   const res = await fetch(url + "/util/generateCode");
+  //   console.log(res.status);
+  //   const data = await res.json();
+  //   console.log(data);
+  //   setFileUrl(url + "/" + data.filename);
+  // };
 
   const generateCodeFromData = async () => {
     const res = await fetch(url + "/util/generateCodeFromData", {
@@ -22,12 +25,18 @@ const CodeGenerator = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ files: structureData[selOptions].files, dependencies, name: "test" }),
+      body: JSON.stringify({
+        files: structureData[selOptions].files,
+        dependencies,
+        name: "test",
+        createdBy: currentUser._id,
+      }),
     });
     console.log(res.status);
     const data = await res.json();
     console.log(data);
     setFileUrl(url + "/" + data.filename);
+    toast.success("Boilerplate Generated Successfully");
   };
 
   const projectDirectories = () => {
@@ -49,7 +58,6 @@ const CodeGenerator = () => {
     const newDependencies = dependencies.filter((dep, i) => i !== index);
     setDependencies(newDependencies);
   };
-
 
   const showDependencies = (dependencies, action) => {
     return (
@@ -81,7 +89,6 @@ const CodeGenerator = () => {
                     onClick={(e) => removeDependency(dependency, index)}
                   >
                     <i class="fas fa-trash-alt"></i>
-                    
                   </button>
                 )}
               </div>
@@ -93,7 +100,12 @@ const CodeGenerator = () => {
   };
 
   return (
-    <div>
+    <div
+      style={{
+        backgroundImage: `url("/back_img4.png")`,
+        backgroundSize: "cover",
+      }}
+    >
       <>
         {/* Dependencies Modal */}
         <div
@@ -134,47 +146,66 @@ const CodeGenerator = () => {
         </div>
       </>
 
-      <div className="container">
-        <p className="text-center display-4">Generate Boilerplate Code</p>
-        <hr />
-        <div className="row">
-          <div className="col-md-6">
-            <div className="p-5">
-              <h3>Project Directories</h3>
-              <hr />
-              {projectDirectories()}
+      <div className="container py-3">
+        <div className="card">
+          <div className="card-body p-5">
+            <p className="display-4">
+              <span className="fw-bold">NodeJS</span> Boilerplate Code Generator
+            </p>
+            <hr />
+            <div className="row">
+              <div className="col-md-6">
+                <div className="p-5">
+                  <h3>Project Directories</h3>
+                  <hr />
+                  {projectDirectories()}
+                </div>
+              </div>
+              <div className="col-md-6">
+                <div className="p-5">
+                  <h3>Project Dependencies</h3>
+                  <hr />
+                  <button
+                    className="btn btn-success my-3"
+                    type="button"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModal"
+                  >
+                    <i class="fas fa-plus"></i>
+                    Add Dependency
+                  </button>
+
+                  {showDependencies(dependencies, "remove")}
+                </div>
+              </div>
             </div>
           </div>
-          <div className="col-md-6">
-            <div className="p-5">
-              <h3>Project Dependencies</h3>
-              <hr />
-              <button
-                className="btn btn-success my-3"
-                type="button"
-                data-bs-toggle="modal"
-                data-bs-target="#exampleModal"
-              >
-                <i class="fas fa-plus"></i>
-                Add Dependency
-              </button>
-              
-              {showDependencies(dependencies, "remove")}
+
+          <div className="card-footer">
+            <div className="row">
+              <div className="col-md-2">
+                <button
+                  className="btn btn-primary btn-lg w-100"
+                  onClick={generateCodeFromData}
+                >
+                  Generate
+                </button>
+              </div>
+              {fileUrl && (
+                <div className="col-md-2">
+                  <a
+                    className="btn btn-lg btn-outline-success w-100"
+                    href={fileUrl}
+                  >
+                    <i class="fa-solid fa-cloud-arrow-down"></i>
+                    &nbsp;Download
+                  </a>
+                </div>
+              )}
             </div>
           </div>
         </div>
       </div>
-      <hr />
-      <div className="d-flex justify-content-center">
-      <button className="btn btn-outline-primary mt-5" onClick={generateBoilerplate}>Generate Boilerplate</button>
-      <br />
-      <button className="btn btn-primary mt-5" onClick={generateCodeFromData}>
-        Generate Boilerplate
-      </button>
-
-      <a href={fileUrl}>Download File</a>
-      </div>
-      
     </div>
   );
 };

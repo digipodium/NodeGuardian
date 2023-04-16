@@ -14,13 +14,21 @@ import UserProvider from "./context/UserProvider";
 import UserProfile from "./components/user/UserProfile";
 import AdminAuth from "./auth/AdminAuth";
 import UserAuth from "./auth/UserAuth";
+import { useState } from "react";
+import {Toaster} from 'react-hot-toast';
+import MyTemplates from "./components/user/MyTemplates";
 
 function App() {
+
+  const [currentUser, setCurrentUser] = useState(JSON.parse(sessionStorage.getItem('user')));
+  const [currentAdmin, setCurrentAdmin] = useState(JSON.parse(sessionStorage.getItem('admin')));
+
   return (
     <div>
       <BrowserRouter>
-        <AdminProvider>
-          <UserProvider>
+      <Toaster position="top-center" />
+        <AdminProvider currentAdmin={currentAdmin}>
+          <UserProvider currentUser={currentUser}>
             <Routes>
               <Route path="/" element={<Navigate to="/main/home" />} />
               <Route path="admin" element={<AdminAuth><Admin /></AdminAuth>}>
@@ -30,6 +38,7 @@ function App() {
                 <Route path="generator" element={<CodeGenerator />} />
                 <Route path="browser" element={<CodeBrowser />} />
                 <Route path="profile" element={<UserProfile />} />
+                <Route path="mytemplates" element={<MyTemplates />} />
               </Route>
               <Route path="main" element={<Main />}>
                 <Route path="login" element={<Login />} />

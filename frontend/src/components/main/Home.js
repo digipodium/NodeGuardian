@@ -28,7 +28,7 @@ const Home = () => {
         >
           <div
             className="mask"
-            style={{ backgroundColor: "rgba(0, 0, 0, 0.7)" }}
+            style={{ backgroundColor: "#3e863db8" }}
           >
             <div className="container h-100">
               <div className="row d-flex justify-content-center align-items-center h-100">
@@ -62,7 +62,7 @@ const Home = () => {
     {/**/}
     <section draggable="false" className="container pt-5" data-v-271253ee="">
       <section className="mb-10">
-        <h2 className="fw-bold mb-5 text-center">Why is it so great?</h2>
+        <h2 className="fw-bold mb-5 text-center">Features</h2>
         <div className="row gx-lg-5 align-items-center">
           <div className="col-lg-5 mb-5 mb-lg-0">
             <div
@@ -112,7 +112,7 @@ const Home = () => {
                 </div>
               </div>
               <div className="flex-grow-1 ms-4">
-                <p className="fw-bold mb-1">Support 24/7</p>
+                <p className="fw-bold mb-1">Boilerplate Code Generation</p>
                 <p className="text-muted mb-0">
                   Lorem ipsum dolor, sit amet consectetur adipisicing elit.
                   Nihil quisquam quibusdam modi sapiente magni molestias
@@ -133,7 +133,7 @@ const Home = () => {
                 </div>
               </div>
               <div className="flex-grow-1 ms-4">
-                <p className="fw-bold mb-1">Safe and solid</p>
+                <p className="fw-bold mb-1">Multi Platform Support</p>
                 <p className="text-muted mb-0">
                   Eum nostrum fugit numquam, voluptates veniam neque quibusdam
                   ullam aspernatur odio soluta, quisquam dolore animi mollitia a
@@ -154,7 +154,7 @@ const Home = () => {
                 </div>
               </div>
               <div className="flex-grow-1 ms-4">
-                <p className="fw-bold mb-1">Extremely fast</p>
+                <p className="fw-bold mb-1">Up To Date Package versions</p>
                 <p className="text-muted mb-0">
                   Enim cupiditate, minus nulla dolor cumque iure eveniet facere
                   ullam beatae hic voluptatibus dolores exercitationem? Facilis

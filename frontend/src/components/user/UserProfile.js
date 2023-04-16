@@ -89,7 +89,7 @@ const UserProfile = () => {
           <div className="col-md-8 mb-4">
             <div className="card mb-4">
               <div className="card-header py-3">
-                <h5 className="mb-0">Biling details</h5>
+                <h5 className="mb-0"> <i class="fas fa-pen-alt    "></i> Edit Profile</h5>
               </div>
               <div className="card-body">
                 <form>

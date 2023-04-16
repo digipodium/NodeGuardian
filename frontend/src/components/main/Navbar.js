@@ -69,12 +69,12 @@ const Navbar = () => {
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink className="nav-link" aria-current="page" to="/main/browser">
+              <NavLink className="nav-link" aria-current="page" to="/user/browser">
                 Browser Templates
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink className="nav-link" aria-current="page" to="/main/browser">
+              <NavLink className="nav-link" aria-current="page" to="/user/browser">
                 Generate Boilerplate Code
               </NavLink>
             </li>
