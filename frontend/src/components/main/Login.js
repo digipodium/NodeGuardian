@@ -49,8 +49,8 @@ const Login = () => {
   });
 
   return (
-    <div>
-      <section className="vh-100" style={{ backgroundColor: "#eee" }}>
+    <div className="login-container">
+      <section className="vh-100">
         <div className="container h-100">
           <div className="row d-flex justify-content-center align-items-center h-100">
             <div className="col-lg-12 col-xl-11">

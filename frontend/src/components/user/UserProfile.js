@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import app_config from "../../config";
+import Swal from "sweetalert2";
+import { useFormik } from "formik";
 
 const UserProfile = () => {
   const [currentUser, setCurrentUser] = useState(
@@ -7,6 +9,7 @@ const UserProfile = () => {
   );
 
   const url = app_config.apiUrl;
+  const [passwordHidden, setPasswordHidden] = useState(true);
 
   const updateProfile = async (data) => {
     console.log(data);
@@ -41,6 +44,35 @@ const UserProfile = () => {
   };
 
 
+  const deleteAccount = async () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire("Deleted!", "Your file has been deleted.", "success");
+      }
+    })
+    return;
+    const res = await fetch(url + "/user/delete/" + currentUser._id, {
+      method: "DELETE",
+    });
+    if (res.status === 200) {
+      sessionStorage.removeItem("user");
+      window.location.href = "/";
+    }
+  };
+
+  const profileForm = useFormik({
+    initialValues: currentUser,
+    onSubmit: updateProfile
+  })
+
 
   return (
     <div>
@@ -56,32 +88,37 @@ const UserProfile = () => {
                 <img height={200} className="border-rounded d-block m-auto" src={currentUser.avatar?`${url}/${currentUser.avatar}` : '/avatar.webp'} alt="" />
                 <label className="btn btn-outline-secondary w-100 mt-3" htmlFor="upload-image">  <i class="fas fa-pen"></i>&nbsp;Edit </label>
                 <input type="file" hidden onChange={uploadProfileImage} id="upload-image" />
+                <p className="text-center">Welcome
+                  Back</p>
+                <p className="text-center">
+                  <span className="h4">{currentUser.name}</span>
+                </p>
                 <ul className="list-group list-group-flush">
                   <li className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
-                    Products
-                    <span>$53.98</span>
+                    Email
+                    <span className="fw-bold">{currentUser.email}</span>
                   </li>
                   <li className="list-group-item d-flex justify-content-between align-items-center px-0">
-                    Shipping
-                    <span>Gratis</span>
-                  </li>
-                  <li className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
-                    <div>
-                      <strong>Total amount</strong>
-                      <strong>
-                        <p className="mb-0">(including VAT)</p>
-                      </strong>
-                    </div>
-                    <span>
-                      <strong>$53.98</strong>
-                    </span>
+                    Password
+                    {passwordHidden ? (
+                      <span className="fw-bold">********</span>
+                    ) : (
+                      <span className="fw-bold">{currentUser.password}</span>
+                    )}
+                    <button
+                      className="btn btn-outline-secondary"
+                      onClick={() => setPasswordHidden(!passwordHidden)}
+                    >
+                      {passwordHidden ? "Show" : "Hide"}
+                    </button>
                   </li>
                 </ul>
                 <button
                   type="button"
-                  className="btn btn-primary btn-lg btn-block"
+                  className="btn btn-danger btn-block"
+                  onClick={deleteAccount}
                 >
-                  Make purchase
+                  Delete Account
                 </button>
               </div>
             </div>
@@ -92,103 +129,60 @@ const UserProfile = () => {
                 <h5 className="mb-0"> <i class="fas fa-pen-alt    "></i> Edit Profile</h5>
               </div>
               <div className="card-body">
-                <form>
+              <form onSubmit={profileForm.handleSubmit}>
                   {/* 2 column grid layout with text inputs for the first and last names */}
-                  <div className="row mb-4">
+                  <div className=" mb-4">
                     <div className="col">
-                      <div className="form-outline">
+                      <div className="">
+                      <label className="form-label" htmlFor="form7Example1">
+                          Full Name
+                        </label>
                         <input
                           type="text"
-                          id="form7Example1"
+                          id="name"
+                          value={profileForm.values.name}
+                          onChange={profileForm.handleChange}
                           className="form-control"
                         />
-                        <label className="form-label" htmlFor="form7Example1">
-                          First name
-                        </label>
+                        
                       </div>
                     </div>
-                    <div className="col">
-                      <div className="form-outline">
+                    
+                  </div>
+                  <div className="mb-4">
+                      <div className="">
+                      <label className="form-label" htmlFor="form7Example2">
+                          Email
+                        </label>
                         <input
-                          type="text"
-                          id="form7Example2"
+                          type="email"
+                          id="email"
+                          value={profileForm.values.email}
+                          onChange={profileForm.handleChange}
                           className="form-control"
                         />
-                        <label className="form-label" htmlFor="form7Example2">
-                          Last name
-                        </label>
+                        
                       </div>
                     </div>
-                  </div>
                   {/* Text input */}
-                  <div className="form-outline mb-4">
+                  <div className=" mb-4">
+                  <label className="form-label" htmlFor="form7Example3">
+                      Password
+                    </label>
                     <input
-                      type="text"
-                      id="form7Example3"
+                      type="password"
+                      id="password"
+                      value={profileForm.values.password}
+                      onChange={profileForm.handleChange}
                       className="form-control"
                     />
-                    <label className="form-label" htmlFor="form7Example3">
-                      Company name
-                    </label>
+                   
                   </div>
-                  {/* Text input */}
-                  <div className="form-outline mb-4">
-                    <input
-                      type="text"
-                      id="form7Example4"
-                      className="form-control"
-                    />
-                    <label className="form-label" htmlFor="form7Example4">
-                      Address
-                    </label>
-                  </div>
-                  {/* Email input */}
-                  <div className="form-outline mb-4">
-                    <input
-                      type="email"
-                      id="form7Example5"
-                      className="form-control"
-                    />
-                    <label className="form-label" htmlFor="form7Example5">
-                      Email
-                    </label>
-                  </div>
-                  {/* Number input */}
-                  <div className="form-outline mb-4">
-                    <input
-                      type="number"
-                      id="form7Example6"
-                      className="form-control"
-                    />
-                    <label className="form-label" htmlFor="form7Example6">
-                      Phone
-                    </label>
-                  </div>
-                  {/* Message input */}
-                  <div className="form-outline mb-4">
-                    <textarea
-                      className="form-control"
-                      id="form7Example7"
-                      rows={4}
-                      defaultValue={""}
-                    />
-                    <label className="form-label" htmlFor="form7Example7">
-                      Additional information
-                    </label>
-                  </div>
-                  {/* Checkbox */}
-                  <div className="form-check d-flex justify-content-center mb-2">
-                    <input
-                      className="form-check-input me-2"
-                      type="checkbox"
-                      defaultValue=""
-                      id="form7Example8"
-                      defaultChecked=""
-                    />
-                    <label className="form-check-label" htmlFor="form7Example8">
-                      Create an account?
-                    </label>
-                  </div>
+                  
+                  
+                 
+                  
+                  <button className="btn btn-primary"> <i class="fa-solid fa-arrows-rotate"></i> Update Profile</button>
                 </form>
               </div>
             </div>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import app_config from "../../config";
+import { toast } from "react-hot-toast";
 
 const MyTemplates = () => {
   const [codeList, setCodeList] = useState([]);
@@ -28,6 +29,20 @@ const MyTemplates = () => {
       setLoading(false);
     }
   };
+
+  const deleteCode = async (id) => {
+    const response = await fetch(`${apiUrl}/code/delete/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json"
+      },
+    });
+    if (response.status === 200) {
+      toast.success("Boilerplate Code deleted successfully");
+      getCodeList();
+    }
+  };
+
 
   useEffect(() => {
     getCodeList();
@@ -91,6 +106,7 @@ const MyTemplates = () => {
                       <button
                         className="btn btn-outline-danger btn-sm mt-2"
                         type="button"
+                        onClick={() => deleteCode(code._id)}
                       >
                         <i class="fas fa-trash"></i> Delete
                       </button>

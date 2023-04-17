@@ -80,15 +80,13 @@ const Footer = () => {
                 {/*Grid column*/}
                 <div className="col-md-5 col-12">
                   {/* Email input */}
-                  <div className="form-outline form-white mb-4">
+                  <div className=" form-white mb-4">
                     <input
                       type="email"
                       id="form5Example21"
                       className="form-control"
+                      placeholder="Your email"
                     />
-                    <label className="form-label" htmlFor="form5Example21">
-                      Email address
-                    </label>
                   </div>
                 </div>
                 {/*Grid column*/}
@@ -238,9 +236,9 @@ const Footer = () => {
           className="text-center p-3"
           style={{ backgroundColor: "rgba(0, 0, 0, 0.2)" }}
         >
-          © 2020 Copyright:
+          © 2023 Copyright:
           <a className="text-white" href="https://mdbootstrap.com/">
-            MDBootstrap.com
+            NodeGuardian.com
           </a>
         </div>
         {/* Copyright */}

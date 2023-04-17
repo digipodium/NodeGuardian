@@ -206,19 +206,19 @@ const checkFolderCreated = (folderPath) => {
 const createCode = (dependencies, files, filename, cb) => {
   
   const packageContent = packageBuilder(dependencies);
-
+  // console.log(packageContent);
   files.forEach((file) => {
     checkFolderCreated(path.join(BASE_PATH, file.path));
     createFiles(path.join(BASE_PATH, file.path, file.name), file.content);
-    createZip(BASE_PATH, `${filename}.zip`);
-    cb(`${filename}.zip`);
   });
+  createZip(BASE_PATH, `${filename}.zip`);
+  cb(`${filename}.zip`);
 };
 
 const packageBuilder = (libraries) => {
   let dependencies = ``;  
-  libraries.forEach( async ({name, package}) => {
-    let version = await getPackageVersion(package);
+  libraries.forEach( async ({name, package, version}) => {
+    // let version = await getPackageVersion(package);
     // console.log(version);
     dependencies += `"${package}": "^${version}",\n`;
   });

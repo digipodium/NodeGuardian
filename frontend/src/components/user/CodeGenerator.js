@@ -7,9 +7,14 @@ const CodeGenerator = () => {
   const [fileUrl, setFileUrl] = useState("");
   const selOptions = JSON.parse(sessionStorage.getItem("selOptions"));
   // console.log(selOptions);
-  console.log(structureData[selOptions].files);
+  console.log(structureData[selOptions.main].files);
   const [dependencies, setDependencies] = useState([]);
-  const [currentUser, setCurrentUser] = useState(JSON.parse(sessionStorage.getItem("user")));
+  const [currentUser, setCurrentUser] = useState(
+    JSON.parse(sessionStorage.getItem("user"))
+  );
+
+  const [searchText, setSearchText] = useState('');
+  const [libToDisplay, setLibToDisplay] = useState([]);
 
   // const generateBoilerplate = async () => {
   //   const res = await fetch(url + "/util/generateCode");
@@ -26,7 +31,7 @@ const CodeGenerator = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        files: structureData[selOptions].files,
+        files: structureData[selOptions.main].files,
         dependencies,
         name: "test",
         createdBy: currentUser._id,
@@ -39,12 +44,56 @@ const CodeGenerator = () => {
     toast.success("Boilerplate Generated Successfully");
   };
 
+  const getFilesInHierarchy = (filesList) => {
+    let files = {};
+    filesList.forEach((obj) => {
+      if (obj.path === "") {
+        if (files.base.includes(obj.name)) return;
+        files.base.push(obj.name);
+      } else {
+        if (files.includes(obj.path)) files.push(obj.path + "/" + obj.name);
+      }
+    });
+    // console.log(files);
+  };
+
+  const getAllPaths = (filesList) => {
+    let paths = [];
+    filesList.forEach((obj) => {
+      if (obj.path !== "") {
+        if (!paths.includes(obj.path)) {
+          paths.push(obj.path);
+        }
+      }
+    });
+    paths.push("");
+    console.log(paths);
+    return paths;
+  };
+  // getAllPaths(structureData[selOptions].files);
+
+  // getFilesInHierarchy(structureData[selOptions].files);
+
   const projectDirectories = () => {
-    console.log(structureData[selOptions].files);
-    return structureData[selOptions].files.map((file) => {
+    console.log(structureData[selOptions.main].files);
+    let paths = getAllPaths(structureData[selOptions.main].files);
+    return paths.map((path) => {
       return (
         <div>
-          <h3>{file.name}</h3>
+          {path && (
+            <p className="h5">
+              <i class="fa-solid fa-folder"></i> {path}
+            </p>
+          )}
+
+          {structureData[selOptions.main].files.map((file) =>
+            file.path === path ? (
+              <p className="h5">
+                {file.path !== "" && <>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</>}
+                <i class="fa-regular fa-file"></i> {file.name}
+              </p>
+            ) : null
+          )}
         </div>
       );
     });
@@ -104,49 +153,47 @@ const CodeGenerator = () => {
       style={{
         backgroundImage: `url("/back_img4.png")`,
         backgroundSize: "cover",
+        minHeight: "100vh",
       }}
     >
-      <>
-        {/* Dependencies Modal */}
-        <div
-          className="modal fade modal-lg"
-          id="exampleModal"
-          tabIndex={-1}
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-        >
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <input
-                  className="form-control"
-                  placeholder="🔍 Search Dependency"
-                />
-                <button
-                  type="button"
-                  className="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                />
-              </div>
-              <div className="modal-body">
-                {showDependencies(structureData[selOptions].library, "add")}
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                >
-                  Close
-                </button>
-              </div>
+      <div
+        className="modal fade modal-lg"
+        id="exampleModal"
+        tabIndex={-1}
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <input
+                className="form-control"
+                placeholder="🔍 Search Dependency"
+              />
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              />
+            </div>
+            <div className="modal-body">
+              {showDependencies(structureData[selOptions.main].library, "add")}
+            </div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
             </div>
           </div>
         </div>
-      </>
+      </div>
 
-      <div className="container py-3">
+      <div className="container py-5">
         <div className="card">
           <div className="card-body p-5">
             <p className="display-4">
@@ -188,7 +235,7 @@ const CodeGenerator = () => {
                   className="btn btn-primary btn-lg w-100"
                   onClick={generateCodeFromData}
                 >
-                  Generate
+                  <i class="fa-solid fa-gear"></i>&nbsp; Generate
                 </button>
               </div>
               {fileUrl && (
