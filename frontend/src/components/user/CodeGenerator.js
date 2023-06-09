@@ -16,13 +16,6 @@ const CodeGenerator = () => {
   const [searchText, setSearchText] = useState('');
   const [libToDisplay, setLibToDisplay] = useState([]);
 
-  // const generateBoilerplate = async () => {
-  //   const res = await fetch(url + "/util/generateCode");
-  //   console.log(res.status);
-  //   const data = await res.json();
-  //   console.log(data);
-  //   setFileUrl(url + "/" + data.filename);
-  // };
 
   const generateCodeFromData = async () => {
     const res = await fetch(url + "/util/generateCodeFromData", {
